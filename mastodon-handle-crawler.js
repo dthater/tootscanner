@@ -38,6 +38,7 @@ function scanToots() {
     .map(findHandle)
     .filter(t => t != null)
     .map(convertUrlToHandle)
+    .map(flipUrlToHandle)
     .map(fixHandle)
     .filter(t => t != null)
     .forEach(t => {
@@ -63,6 +64,15 @@ function convertUrlToHandle(handle) {
   let items = /(http[s]*:\/\/)([a-zA-Z0-9\.-\/]*)\/(@[a-zA-Z0-9-]*)/g.exec(handle)
   if (items) {
     let [finding, protocoll, host, name] = items
+    return `${name}@${host}`
+  }
+  return handle
+}
+
+function flipUrlToHandle(handle) {
+  let items = /^([a-zA-Z0-9\.-\/]*)\/(@[a-zA-Z0-9-]*)$/g.exec(handle)
+  if (items) {
+    let [finding, host, name] = items
     return `${name}@${host}`
   }
   return handle
